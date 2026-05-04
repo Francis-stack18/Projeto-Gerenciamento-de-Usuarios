@@ -6,6 +6,7 @@ var email = document.querySelector("#exampleInputEmail");
 var password = document.querySelector("#exampleInputPassword");
 var photo = document.querySelector("#exampleInputFile");
 var admin = document.querySelector("#exampleInputAdmin");
+var user = {}
 
 var fields = document.querySelectorAll("#form-user-create [name]");
 
@@ -13,10 +14,10 @@ fields.forEach(function(field, index){
 
     if(field.name == "gender"){
         if(field.checked){
-            console.log("Sim", field)
+            user[field.name] = field.value
         }
     }else{
-        console.log("Não")
+        user[field.name] = field.value
     }
 
 });
