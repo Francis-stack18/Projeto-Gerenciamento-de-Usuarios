@@ -3,13 +3,15 @@ class UserController {
     this.formEl = document.getElementById(formId);
     this.tableEl = document.getElementById(tableId);
     this.onSubmit();
-    this.onEdit()
+    this.onEdit();
   }
 
-  onEdit(){
-    document.querySelector("#box-user-update .btn-cancel").addEventListener("click", e =>{
-      this.showPanelCreate()
-    })
+  onEdit() {
+    document
+      .querySelector("#box-user-update .btn-cancel")
+      .addEventListener("click", (e) => {
+        this.showPanelCreate();
+      });
   }
 
   onSubmit() {
@@ -99,7 +101,7 @@ class UserController {
   addLine(dataUser) {
     let tr = document.createElement("tr");
 
-    tr.dataset.user = JSON.stringify(dataUser)
+    tr.dataset.user = JSON.stringify(dataUser);
 
     tr.innerHTML = `
             <td><img src="${dataUser.photo}" alt="User Image" class="img-circle img-sm"></td>
@@ -113,23 +115,30 @@ class UserController {
             </td>
     `;
 
-    tr.querySelector(".btn-edit").addEventListener("click", e =>{
-      JSON.parse(tr.dataset.user)
-      this.showPanelUpdate()
-
-    })
+    tr.querySelector(".btn-edit").addEventListener("click", (e) => {
+      let json = JSON.parse(tr.dataset.user);
+      let form = document.querySelector("#form-user-update");
+      for (let name in json) {
+        let field = form.querySelector("[name=" + name.replace("_", "") + "]");
+        if (field) {
+          if (field.type == "file") continue;
+          field.value = json[name];
+        }
+      }
+      this.showPanelUpdate();
+    });
     this.tableEl.appendChild(tr);
     this.updateCount();
   }
 
-  showPanelCreate(){
-    document.querySelector("#box-user-create").style.display = "block"
-    document.querySelector("#box-user-update").style.display = "none"
+  showPanelCreate() {
+    document.querySelector("#box-user-create").style.display = "block";
+    document.querySelector("#box-user-update").style.display = "none";
   }
 
-  showPanelUpdate(){
-    document.querySelector("#box-user-create").style.display = "none"
-    document.querySelector("#box-user-update").style.display = "block"
+  showPanelUpdate() {
+    document.querySelector("#box-user-create").style.display = "none";
+    document.querySelector("#box-user-update").style.display = "block";
   }
   updateCount() {
     let numberUsers = 0;
@@ -137,10 +146,10 @@ class UserController {
 
     [...this.tableEl.children].forEach((tr) => {
       numberUsers++;
-      let user = JSON.parse(tr.dataset.user)
-        if(user._admin) numberAdmin++
+      let user = JSON.parse(tr.dataset.user);
+      if (user._admin) numberAdmin++;
     });
-    document.querySelector("#numbers-users").innerHTML = numberUsers
-    document.querySelector("#numbers-users-admin").innerHTML = numberAdmin
+    document.querySelector("#numbers-users").innerHTML = numberUsers;
+    document.querySelector("#numbers-users-admin").innerHTML = numberAdmin;
   }
 }
