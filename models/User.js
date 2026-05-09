@@ -121,9 +121,9 @@ class User {
 
       users.map(u=>{
         
-        if(u._id === this._id){
+        if(u._id == this._id){
 
-          u = this;
+          Object.assign(u, this)
 
         }
 
